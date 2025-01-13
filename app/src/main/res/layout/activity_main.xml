@@ -1,0 +1,68 @@
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+    <!-- Spinner para "Pareja" -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Pareja"
+        android:layout_marginBottom="8dp" />
+    <Spinner
+        android:id="@+id/spinner_pareja"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Spinner para "Zona" -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Zona"
+        android:layout_marginBottom="8dp" />
+    <Spinner
+        android:id="@+id/spinner_zona"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- Código de barras -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/Código_de_Barras"
+        android:layout_marginBottom="8dp" />
+    <EditText
+        android:id="@+id/edittext_codigo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/Introduce_el_código" />
+
+    <!-- Botones -->
+    <Button
+        android:id="@+id/button_add"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/girs"
+        android:text="@string/Añadir_Lectura"
+        android:layout_marginTop="16dp" />
+
+    <Button
+        android:id="@+id/button_exportar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="@color/girs"
+        android:text="@string/Exportar_a_Excel"
+        android:layout_marginTop="8dp" />
+
+    <!-- Lista para mostrar los datos -->
+    <ListView
+        android:id="@+id/listview_registros"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:divider="@android:color/darker_gray"
+        android:dividerHeight="1dp" />
+
+</LinearLayout>
