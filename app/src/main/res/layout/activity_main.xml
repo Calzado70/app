@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@drawable/foto"
     android:padding="16dp">
 
     <!-- Spinner para "Pareja" -->
@@ -10,28 +11,49 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Pareja"
+        android:textColor="@color/white"
         android:layout_marginBottom="8dp" />
     <Spinner
         android:id="@+id/spinner_pareja"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/white"/>
 
     <!-- Spinner para "Zona" -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Zona"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp" />
     <Spinner
         android:id="@+id/spinner_zona"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:background="@color/white"/>
+
+    <!-- Spinner para "Conteo" -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/conteo"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp"
+        android:layout_marginBottom="8dp" />
+    <Spinner
+        android:id="@+id/spinner_conteo"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/white"/>
 
     <!-- Código de barras -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/Código_de_Barras"
+        android:textColor="@color/white"
+        android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp" />
     <EditText
         android:id="@+id/edittext_codigo"

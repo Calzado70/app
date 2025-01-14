@@ -6,4 +6,11 @@
     <string name="Código_de_Barras">Código de Barras:</string>
     <string name="Zona">Zona:</string>
     <string name="Pareja">Pareja:</string>
+    <string name="conteo">Conteo</string>
+    <string-array name="conteos">
+        <item>conteo1</item>
+        <item>conteo2</item>
+        <item>conteo3</item>
+    </string-array>
+
 </resources>

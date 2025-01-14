@@ -28,7 +28,7 @@ import java.util.Locale;
 public class MainActivity extends AppCompatActivity {
 
     // Variables de la interfaz
-    private Spinner parejaSpinner, zonaSpinner;
+    private Spinner parejaSpinner, zonaSpinner, conteoSpinner;
     private EditText codigoEditText;
     private ListView registrosListView;
 
@@ -37,9 +37,10 @@ public class MainActivity extends AppCompatActivity {
     private ArrayList<String> registros; // Lista para mostrar datos en formato texto
     private ArrayAdapter<String> registrosAdapter;
 
-    // Opciones de Pareja y Zona
+    // Opciones de Pareja, Zona y Conteo
     private final String[] PAREJAS = {"pareja1", "pareja2", "pareja3", "pareja4", "pareja5", "pareja6", "pareja7", "pareja8"};
     private final String[] ZONAS = {"Laboratorio", "Terceros", "Oficina", "MezaniA", "MezaniB", "Estanteria_lado_A", "Estanteria_lado_B", "Estanteria_lado_C"};
+    private final String[] CONTEOS = {"conteo1", "conteo2", "conteo3"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // Inicializar los elementos de la interfaz
         parejaSpinner = findViewById(R.id.spinner_pareja);
         zonaSpinner = findViewById(R.id.spinner_zona);
+        conteoSpinner = findViewById(R.id.spinner_conteo); // Nuevo Spinner para conteo
         codigoEditText = findViewById(R.id.edittext_codigo);
         registrosListView = findViewById(R.id.listview_registros);
         Button addButton = findViewById(R.id.button_add);
@@ -57,6 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // Configurar Spinners
         parejaSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, PAREJAS));
         zonaSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ZONAS));
+        conteoSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, CONTEOS)); // Configurar conteo
 
         // Inicializar datos en memoria
         codigoCantidadMap = new HashMap<>();
@@ -92,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         // Obtener valores de los spinners
         String pareja = parejaSpinner.getSelectedItem().toString();
         String zona = zonaSpinner.getSelectedItem().toString();
+        String conteo = conteoSpinner.getSelectedItem().toString(); // Obtener conteo seleccionado
 
         // Incrementar cantidad si el código ya existe, o añadirlo si es nuevo
         int nuevaCantidad = codigoCantidadMap.getOrDefault(codigo, 0) + 1;
@@ -102,19 +106,19 @@ public class MainActivity extends AppCompatActivity {
         String talla = codigo.length() >= 2 ? codigo.substring(codigo.length() - 2) : "NA";
 
         // Actualizar la lista de registros
-        actualizarListaRegistros(pareja, zona, fecha, talla);
+        actualizarListaRegistros(pareja, zona, conteo, fecha, talla);
 
         // Limpiar el campo de código
         codigoEditText.setText("");
         Toast.makeText(this, "Lectura procesada.", Toast.LENGTH_SHORT).show();
     }
 
-    private void actualizarListaRegistros(String pareja, String zona, String fecha, String talla) {
+    private void actualizarListaRegistros(String pareja, String zona, String conteo, String fecha, String talla) {
         registros.clear();
         for (String codigo : codigoCantidadMap.keySet()) {
             int cantidad = codigoCantidadMap.get(codigo);
-            String registro = "Pareja: " + pareja + ", Zona: " + zona + ", Código: " + codigo +
-                    ", Fecha: " + fecha + ", Talla: " + talla + ", Cantidad: " + cantidad;
+            String registro = "Pareja: " + pareja + ", Zona: " + zona + ", Conteo: " + conteo +
+                    ", Código: " + codigo + ", Fecha: " + fecha + ", Talla: " + talla + ", Cantidad: " + cantidad;
             registros.add(registro);
         }
         registrosAdapter.notifyDataSetChanged();
