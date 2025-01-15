@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity {
         // Inicializar los elementos de la interfaz
         parejaSpinner = findViewById(R.id.spinner_pareja);
         zonaSpinner = findViewById(R.id.spinner_zona);
-        conteoSpinner = findViewById(R.id.spinner_conteo); // Nuevo Spinner para conteo
+        conteoSpinner = findViewById(R.id.spinner_conteo);
         codigoEditText = findViewById(R.id.edittext_codigo);
         registrosListView = findViewById(R.id.listview_registros);
         Button addButton = findViewById(R.id.button_add);
@@ -59,12 +59,12 @@ public class MainActivity extends AppCompatActivity {
         // Configurar Spinners
         parejaSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, PAREJAS));
         zonaSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ZONAS));
-        conteoSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, CONTEOS)); // Configurar conteo
+        conteoSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, CONTEOS));
 
         // Inicializar datos en memoria
         codigoCantidadMap = new HashMap<>();
         registros = new ArrayList<>();
-        registrosAdapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1, registros);
+        registrosAdapter = new ArrayAdapter<>(this, R.layout.list_item_layout, registros);
         registrosListView.setAdapter(registrosAdapter);
 
         // Listener para procesar lecturas automáticas con la pistola lectora

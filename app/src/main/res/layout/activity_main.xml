@@ -16,8 +16,9 @@
     <Spinner
         android:id="@+id/spinner_pareja"
         android:layout_width="match_parent"
+        android:textColor="@color/black"
         android:layout_height="wrap_content"
-        android:background="@color/white"/>
+        android:background="@drawable/bordes"/>
 
     <!-- Spinner para "Zona" -->
     <TextView
@@ -29,9 +30,10 @@
         android:layout_marginBottom="8dp" />
     <Spinner
         android:id="@+id/spinner_zona"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"/>
+        android:background="@drawable/bordes"/>
 
     <!-- Spinner para "Conteo" -->
     <TextView
@@ -43,9 +45,10 @@
         android:layout_marginBottom="8dp" />
     <Spinner
         android:id="@+id/spinner_conteo"
+        android:textColor="@color/black"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/white"/>
+        android:background="@drawable/bordes"/>
 
     <!-- Código de barras -->
     <TextView
@@ -55,26 +58,31 @@
         android:textColor="@color/white"
         android:layout_marginTop="16dp"
         android:layout_marginBottom="8dp" />
+
     <EditText
         android:id="@+id/edittext_codigo"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/Introduce_el_código" />
+        android:layout_height="48dp"
+        android:background="@drawable/bordes"
+        android:hint="@string/Introduce_el_código"
+        android:textColor="@color/black" />
 
     <!-- Botones -->
     <Button
         android:id="@+id/button_add"
         android:layout_width="match_parent"
+        android:background="@drawable/botones"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/girs"
         android:text="@string/Añadir_Lectura"
+        android:textColor="@color/white"
         android:layout_marginTop="16dp" />
 
     <Button
         android:id="@+id/button_exportar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="@color/girs"
+        android:background="@drawable/botones"
+        android:textColor="@color/white"
         android:text="@string/Exportar_a_Excel"
         android:layout_marginTop="8dp" />
 
@@ -83,8 +91,10 @@
         android:id="@+id/listview_registros"
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:divider="@android:color/darker_gray"
-        android:dividerHeight="1dp" />
+        android:layout_weight="2"
+        android:background="@drawable/botones"
+        android:divider="@android:color/background_dark"
+        android:dividerHeight="1dp"
+        android:textColor="@color/white" />
 
 </LinearLayout>
