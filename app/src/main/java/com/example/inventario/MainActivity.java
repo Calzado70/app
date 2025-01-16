@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity {
         ListView registrosListView = findViewById(R.id.listview_registros);
         Button addButton = findViewById(R.id.button_add);
         Button exportButton = findViewById(R.id.button_exportar);
-        Button deleteButton = findViewById(R.id.boton_eliminar);
 
         // Configurar Spinners
         parejaSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, PAREJAS));
@@ -82,19 +81,14 @@ public class MainActivity extends AppCompatActivity {
         // Botón Exportar a Excel
         exportButton.setOnClickListener(view -> exportToExcel());
 
-        deleteButton.setOnClickListener(view -> {
+        // Listener para eliminar un registro con clic largo
+        registrosListView.setOnItemLongClickListener((parent, view, position, id) -> {
             if (registros.isEmpty()) {
                 Toast.makeText(this, "No hay registros para eliminar.", Toast.LENGTH_SHORT).show();
             } else {
                 // Solicitar contraseña para eliminar el último registro
                 promptPasswordForDeletion(registros.size() - 1); // Posición del último registro
             }
-        });
-
-        // Listener para eliminar un registro con clic largo
-        registrosListView.setOnItemLongClickListener((parent, view, position, id) -> {
-            // Solicitar contraseña antes de eliminar
-            promptPasswordForDeletion(position);
             return true;
         });
     }

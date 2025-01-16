@@ -86,16 +86,6 @@
         android:text="@string/Exportar_a_Excel"
         android:layout_marginTop="8dp" />
 
-    <Button
-        android:id="@+id/boton_eliminar"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/botones"
-        android:textColor="@color/white"
-        android:text="@string/eliminar_producto"
-        android:layout_marginTop="8dp" />
-
-
     <!-- Lista para mostrar los datos -->
     <ListView
         android:id="@+id/listview_registros"
