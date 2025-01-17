@@ -2,7 +2,7 @@ package com.example.inventario;
 
 import androidx.annotation.NonNull;
 
-class Registro {
+public class Registro {
     String pareja;
     String zona;
     String conteo;

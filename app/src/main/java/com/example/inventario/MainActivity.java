@@ -12,6 +12,7 @@ import android.widget.Toast;
 import android.app.AlertDialog;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.lifecycle.ViewModelProvider;
 
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
@@ -30,8 +31,7 @@ public class MainActivity extends AppCompatActivity {
     private Spinner parejaSpinner, zonaSpinner, conteoSpinner;
     private EditText codigoEditText;
 
-    // Datos en memoria
-    private ArrayList<Registro> registros; // Lista para almacenar los registros con todos los detalles
+    // Adaptador para la lista de registros
     private ArrayAdapter<String> registrosAdapter;
 
     // Opciones de Pareja, Zona y Conteo
@@ -42,10 +42,16 @@ public class MainActivity extends AppCompatActivity {
     // Contraseña para eliminar
     private static final String PASSWORD = "1234";
 
+    // ViewModel para mantener los datos
+    private MainViewModel viewModel;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        // Inicializar el ViewModel
+        viewModel = new ViewModelProvider(this).get(MainViewModel.class);
 
         // Inicializar los elementos de la interfaz
         parejaSpinner = findViewById(R.id.spinner_pareja);
@@ -61,10 +67,12 @@ public class MainActivity extends AppCompatActivity {
         zonaSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, ZONAS));
         conteoSpinner.setAdapter(new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, CONTEOS));
 
-        // Inicializar datos en memoria
-        registros = new ArrayList<>();
+        // Configurar el adaptador para la lista de registros
         registrosAdapter = new ArrayAdapter<>(this, R.layout.list_item_layout, new ArrayList<>());
         registrosListView.setAdapter(registrosAdapter);
+
+        // Cargar registros desde el ViewModel
+        actualizarListaRegistros();
 
         // Listener para procesar lecturas automáticas con la pistola lectora
         codigoEditText.setOnKeyListener((v, keyCode, event) -> {
@@ -83,11 +91,11 @@ public class MainActivity extends AppCompatActivity {
 
         // Listener para eliminar un registro con clic largo
         registrosListView.setOnItemLongClickListener((parent, view, position, id) -> {
-            if (registros.isEmpty()) {
+            if (viewModel.registros.isEmpty()) {
                 Toast.makeText(this, "No hay registros para eliminar.", Toast.LENGTH_SHORT).show();
             } else {
-                // Solicitar contraseña para eliminar el último registro
-                promptPasswordForDeletion(registros.size() - 1); // Posición del último registro
+                // Solicitar contraseña para eliminar el registro seleccionado
+                promptPasswordForDeletion(position);
             }
             return true;
         });
@@ -108,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
         String talla = codigo.length() >= 2 ? codigo.substring(codigo.length() - 2) : "NA";
 
         boolean encontrado = false;
-        for (Registro registro : registros) {
+        for (Registro registro : viewModel.registros) {
             if (registro.codigo.equals(codigo)) {
                 registro.cantidad++;
                 encontrado = true;
@@ -117,7 +125,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (!encontrado) {
-            registros.add(new Registro(pareja, zona, conteo, codigo, fecha, talla, 1));
+            viewModel.registros.add(new Registro(pareja, zona, conteo, codigo, fecha, talla, 1));
         }
 
         actualizarListaRegistros();
@@ -127,20 +135,20 @@ public class MainActivity extends AppCompatActivity {
 
     private void actualizarListaRegistros() {
         registrosAdapter.clear();
-        for (Registro registro : registros) {
+        for (Registro registro : viewModel.registros) {
             registrosAdapter.add(registro.toString());
         }
         registrosAdapter.notifyDataSetChanged();
     }
 
     private void eliminarRegistro(int position) {
-        registros.remove(position);
+        viewModel.registros.remove(position);
         actualizarListaRegistros();
         Toast.makeText(this, "Registro eliminado.", Toast.LENGTH_SHORT).show();
     }
 
     private void exportToExcel() {
-        if (registros.isEmpty()) {
+        if (viewModel.registros.isEmpty()) {
             Toast.makeText(this, "No hay registros para exportar.", Toast.LENGTH_SHORT).show();
             return;
         }
@@ -161,9 +169,9 @@ public class MainActivity extends AppCompatActivity {
             headerRow.createCell(6).setCellValue("Cantidad");
 
             // Agregar registros a la hoja
-            for (int i = 0; i < registros.size(); i++) {
-                Registro registro = registros.get(i);
-                Row row = sheet.createRow(i + 1); // La fila 0 es para el encabezado
+            for (int i = 0; i < viewModel.registros.size(); i++) {
+                Registro registro = viewModel.registros.get(i);
+                Row row = sheet.createRow(i + 1);
                 row.createCell(0).setCellValue(registro.pareja);
                 row.createCell(1).setCellValue(registro.zona);
                 row.createCell(2).setCellValue(registro.conteo);
@@ -173,13 +181,11 @@ public class MainActivity extends AppCompatActivity {
                 row.createCell(6).setCellValue(registro.cantidad);
             }
 
-            // Obtener valores para el nombre del archivo
+            // Guardar archivo
             String zona = zonaSpinner.getSelectedItem().toString();
             String conteo = conteoSpinner.getSelectedItem().toString();
             String fecha = new SimpleDateFormat("yyyyMMdd_HHmmss", Locale.getDefault()).format(new Date());
             String fileName = zona + "_" + conteo + "_" + fecha + ".xlsx";
-
-            // Guardar archivo en la carpeta de Descargas
             File downloadsDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
             File file = new File(downloadsDir, fileName);
             FileOutputStream fileOut = new FileOutputStream(file);
@@ -187,15 +193,13 @@ public class MainActivity extends AppCompatActivity {
             fileOut.close();
             workbook.close();
 
-            // Notificar éxito
             Toast.makeText(this, "Datos exportados correctamente: " + file.getAbsolutePath(), Toast.LENGTH_LONG).show();
 
-            // Limpiar registros y actualizar lista
-            registros.clear();
+            // Limpiar registros
+            viewModel.registros.clear();
             actualizarListaRegistros();
 
         } catch (Exception e) {
-            // Manejar errores
             Toast.makeText(this, "Error al exportar los datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
     }
@@ -219,5 +223,4 @@ public class MainActivity extends AppCompatActivity {
                 .setNegativeButton("Cancelar", null)
                 .show();
     }
-
 }
