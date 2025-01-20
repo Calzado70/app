@@ -40,7 +40,7 @@ public class MainActivity extends AppCompatActivity {
     private final String[] CONTEOS = {"conteo1", "conteo2", "conteo3"};
 
     // Contraseña para eliminar
-    private static final String PASSWORD = "1234";
+    private static final String PASSWORD = "Admon123";
 
     // ViewModel para mantener los datos
     private MainViewModel viewModel;
@@ -103,9 +103,14 @@ public class MainActivity extends AppCompatActivity {
 
     private void procesarLectura() {
         String codigo = codigoEditText.getText().toString().trim();
+        EditText cantidadManualEditText = findViewById(R.id.cantidad_manual); // Obtener referencia del campo manual
 
+        // Validación: verificar que el código tenga al menos 13 dígitos
         if (codigo.isEmpty()) {
             Toast.makeText(this, "Código vacío, intente de nuevo.", Toast.LENGTH_SHORT).show();
+            return;
+        } else if (codigo.length() < 13) {
+            Toast.makeText(this, "El código debe tener al menos 13 dígitos.", Toast.LENGTH_SHORT).show();
             return;
         }
 
@@ -115,23 +120,49 @@ public class MainActivity extends AppCompatActivity {
         String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
         String talla = codigo.length() >= 2 ? codigo.substring(codigo.length() - 2) : "NA";
 
+        // Leer cantidad manual si está presente
+        int cantidadManual = 0;
+        String cantidadManualTexto = cantidadManualEditText.getText().toString().trim();
+        if (!cantidadManualTexto.isEmpty()) {
+            try {
+                cantidadManual = Integer.parseInt(cantidadManualTexto);
+                if (cantidadManual <= 0) {
+                    Toast.makeText(this, "La cantidad manual debe ser mayor a 0.", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                Toast.makeText(this, "Cantidad manual inválida.", Toast.LENGTH_SHORT).show();
+                return;
+            }
+        }
+
+        // Buscar si el producto ya existe en los registros
         boolean encontrado = false;
         for (Registro registro : viewModel.registros) {
             if (registro.codigo.equals(codigo)) {
-                registro.cantidad++;
+                if (cantidadManual > 0) {
+                    registro.cantidad = cantidadManual; // Actualizar con cantidad manual
+                } else {
+                    registro.cantidad++; // Incrementar automáticamente
+                }
                 encontrado = true;
                 break;
             }
         }
 
+        // Si no existe, agregar un nuevo registro
         if (!encontrado) {
-            viewModel.registros.add(new Registro(pareja, zona, conteo, codigo, fecha, talla, 1));
+            int cantidadInicial = cantidadManual > 0 ? cantidadManual : 1; // Usar cantidad manual o por defecto 1
+            viewModel.registros.add(new Registro(pareja, zona, conteo, codigo, fecha, talla, cantidadInicial));
         }
 
+        // Actualizar la lista y limpiar los campos
         actualizarListaRegistros();
         codigoEditText.setText("");
+        cantidadManualEditText.setText(""); // Limpiar campo manual
         Toast.makeText(this, "Lectura procesada.", Toast.LENGTH_SHORT).show();
     }
+
 
     private void actualizarListaRegistros() {
         registrosAdapter.clear();
