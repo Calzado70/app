@@ -124,4 +124,5 @@
         android:divider="@android:color/background_dark"
         android:dividerHeight="1dp"
         android:textColor="@color/white" />
+
 </LinearLayout>

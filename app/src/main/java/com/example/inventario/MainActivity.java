@@ -121,7 +121,7 @@ public class MainActivity extends AppCompatActivity {
         String zona = zonaSpinner.getSelectedItem().toString();
         String conteo = conteoSpinner.getSelectedItem().toString();
         String fecha = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(new Date());
-        String talla = codigo.length() >= 2 ? codigo.substring(codigo.length() - 2) : "N/A";
+        String talla = codigo.length() >= 2 ? codigo.substring(codigo.length() - 2) : "NA";
 
         // Leer cantidad manual si está presente
         int cantidadManual = 0;
@@ -189,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
             Toast.makeText(this, "No hay registros para exportar.", Toast.LENGTH_SHORT).show();
             return;
         }
+
         try {
             // Crear un libro de Excel
             XSSFWorkbook workbook = new XSSFWorkbook();
@@ -234,6 +235,7 @@ public class MainActivity extends AppCompatActivity {
             // Limpiar registros
             viewModel.registros.clear();
             actualizarListaRegistros();
+
         } catch (Exception e) {
             Toast.makeText(this, "Error al exportar los datos: " + e.getMessage(), Toast.LENGTH_LONG).show();
         }
@@ -243,6 +245,7 @@ public class MainActivity extends AppCompatActivity {
     private void promptPasswordForDeletion(int position) {
         EditText passwordInput = new EditText(this);
         passwordInput.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
+
         new AlertDialog.Builder(this)
                 .setTitle("Eliminar producto")
                 .setMessage("Introduce la contraseña para eliminar este producto:")
