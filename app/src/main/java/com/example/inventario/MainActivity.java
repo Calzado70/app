@@ -110,9 +110,11 @@ public class MainActivity extends AppCompatActivity {
         // Validación: verificar que el código tenga al menos 13 dígitos
         if (codigo.isEmpty()) {
             Toast.makeText(this, "Código vacío, intente de nuevo.", Toast.LENGTH_SHORT).show();
+            codigoEditText.setText(""); // Clear the barcode field
             return;
         } else if (codigo.length() < 13) {
             Toast.makeText(this, "El código debe tener al menos 13 dígitos.", Toast.LENGTH_SHORT).show();
+            codigoEditText.setText(""); // Clear the barcode field
             return;
         }
 
